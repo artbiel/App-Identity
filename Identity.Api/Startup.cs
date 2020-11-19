@@ -25,29 +25,30 @@ namespace Identity.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["ConnectionString"],
-                    sqlServerOptionsAction: sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                    }));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //        sqlServerOptionsAction: sqlOptions =>
+            //        {
+            //            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+            //            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+            //        }));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
-            services.AddHealthChecks()
-                .AddCheck("self", () => HealthCheckResult.Healthy())
-                .AddSqlServer(Configuration["ConnectionString"],
-                    name: "IdentityDB-check",
-                    tags: new string[] { "IdentityDB" });
+            //services.AddHealthChecks()
+            //    .AddCheck("self", () => HealthCheckResult.Healthy())
+            //    .AddSqlServer(Configuration["ConnectionString"],
+            //        name: "IdentityDB-check",
+            //        tags: new string[] { "IdentityDB" });
 
             services.AddIdentityServer()
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddInMemoryIdentityResources(ISConfiguration.GetIdentityResourses())
-                .AddInMemoryApiResources(ISConfiguration.GetApiResourses())
-                .AddInMemoryClients(ISConfiguration.GetClients());
+                //.AddAspNetIdentity<ApplicationUser>()
+                //.AddInMemoryIdentityResources(ISConfiguration.GetIdentityResourses())
+                .AddInMemoryApiScopes(ISConfiguration.Scopes)
+                .AddInMemoryClients(ISConfiguration.Clients)
+                .AddDeveloperSigningCredential();
 
             services.AddControllers();
         }
