@@ -36,10 +36,29 @@ namespace Identity.Api.Configuration
                         {
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
-                            "CoursesAPI",
+                            ISScopes.CourseAPI,
                             "API"
                         },
 
+                        AlwaysIncludeUserClaimsInIdToken = true
+                    },
+                    new Client
+                    {
+                        ClientId = "swagger_api",
+                        ClientName = "Swagger UI",
+                        ClientSecrets = {new Secret("swagger_secret".Sha256())},
+
+                        AllowedGrantTypes = GrantTypes.Code,
+                        RequirePkce = true,
+                        RequireClientSecret = false,
+
+                        RedirectUris = {"https://localhost:7001/swagger/oauth2-redirect.html"},
+                        AllowedCorsOrigins = {"https://localhost:7001"},
+                        AllowedScopes = {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            ISScopes.CourseAPI
+                        },
                         AlwaysIncludeUserClaimsInIdToken = true
                     },
                     new Client
@@ -65,11 +84,11 @@ namespace Identity.Api.Configuration
                 new ApiScope("API")
             };
 
-        //public static IEnumerable<IdentityResource> GetIdentityResourses() =>
-        //    new List<IdentityResource>
-        //    {
-        //        new IdentityResources.OpenId()
-        //    };
+        public IEnumerable<ApiResource> Resourses =>
+            new List<ApiResource>
+            {
+                new ApiResource(ISScopes.CourseAPI) {Scopes = {ISScopes.CourseAPI } }
+            };
     }
 
     static class ISScopes

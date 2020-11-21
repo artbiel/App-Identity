@@ -16,12 +16,10 @@ namespace Identity.Api.Services
     public class ProfileService : IProfileService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public ProfileService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public ProfileService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
         async public Task GetProfileDataAsync(ProfileDataRequestContext context)

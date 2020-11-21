@@ -58,6 +58,7 @@ namespace Identity.Api
             services.AddIdentityServer()
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddProfileService<ProfileService>()
+                .AddInMemoryApiResources(config.Resourses)
                 .AddInMemoryApiScopes(config.Scopes)
                 .AddInMemoryClients(config.Clients)
                 .AddDeveloperSigningCredential();
